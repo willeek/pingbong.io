@@ -151,19 +151,21 @@
 
     // Game state
     let gameStarted = false;
-    const keys = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false, Enter: false };
+    const keys = { w: false, s: false, ArrowUp: false, ArrowDown: false, Enter: false };
     const touchControls = { leftUp: false, leftDown: false, rightUp: false, rightDown: false };
 
     // Keyboard controls
     document.addEventListener('keydown', (e) => {
-      if (e.key in keys) keys[e.key] = true;
+      const key = e.key === 'Enter' ? 'Enter' : (e.key === 'ArrowUp' || e.key === 'ArrowDown') ? e.key : e.key.toLowerCase();
+      if (key in keys) keys[key] = true;
       if (e.key === 'Enter' && !gameStarted) {
         gameStarted = true;
         audioCtx.resume(); // Ensure audio context is active
       }
     });
     document.addEventListener('keyup', (e) => {
-      if (e.key in keys) keys[e.key] = false;
+      const key = e.key === 'Enter' ? 'Enter' : (e.key === 'ArrowUp' || e.key === 'ArrowDown') ? e.key : e.key.toLowerCase();
+      if (key in keys) keys[key] = false;
     });
 
     // Touch controls
@@ -217,8 +219,8 @@
       if (!gameStarted) return;
 
       // Move goalkeepers (keyboard or touch)
-      if ((keys.ArrowLeft || touchControls.leftUp) && goalkeeper1.y > 0) goalkeeper1.y -= goalkeeper1.speed;
-      if ((keys.ArrowRight || touchControls.leftDown) && goalkeeper1.y < canvas.height - goalkeeper1.height) goalkeeper1.y += goalkeeper1.speed;
+      if ((keys.w || touchControls.leftUp) && goalkeeper1.y > 0) goalkeeper1.y -= goalkeeper1.speed;
+      if ((keys.s || touchControls.leftDown) && goalkeeper1.y < canvas.height - goalkeeper1.height) goalkeeper1.y += goalkeeper1.speed;
       if ((keys.ArrowUp || touchControls.rightUp) && goalkeeper2.y > 0) goalkeeper2.y -= goalkeeper2.speed;
       if ((keys.ArrowDown || touchControls.rightDown) && goalkeeper2.y < canvas.height - goalkeeper2.height) goalkeeper2.y += goalkeeper2.speed;
 
